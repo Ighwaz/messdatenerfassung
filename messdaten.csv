@@ -1,0 +1,56 @@
+Sensor Name;Messwert;Einheit;Standort;Beschreibung
+Temperatur;23.5;°C;Labor 1;Raumtemperatur Messplatz A
+Luftfeuchtigkeit;65.2;%;Labor 1;Relative Luftfeuchtigkeit
+Temperatur;21.8;°C;Labor 2;Raumtemperatur Messplatz B
+Druck;1013.25;hPa;Außenbereich;Atmosphärischer Luftdruck
+CO2-Gehalt;420;ppm;Büro;Kohlendioxidkonzentration
+Temperatur;24.1;°C;Büro;Klimaanlage Sollwert
+Lichtintensität;450;Lux;Labor 1;Arbeitsplatzbeleuchtung
+pH-Wert;7.2;pH;Wasserlabor;Trinkwasserqualität
+Temperatur;19.5;°C;Kühlraum;Lagertemperatur
+Luftfeuchtigkeit;45.8;%;Büro;Klimaanlage
+Schallpegel;42.5;dB;Büro;Hintergrundgeräusch
+Temperatur;25.3;°C;Serverraum;IT-Infrastruktur
+Spannung;230.2;V;Technikraum;Netzspannung L1
+Strom;15.7;A;Technikraum;Hauptverbraucher
+Leistung;3.6;kW;Technikraum;Gesamtverbrauch
+Temperatur;18.2;°C;Keller;Grundtemperatur
+Luftfeuchtigkeit;78.5;%;Keller;Feuchtigkeit kritisch
+Windgeschwindigkeit;12.3;km/h;Wetterstation;Außenmessung
+Windrichtung;245;Grad;Wetterstation;SW-Wind
+Niederschlag;2.5;mm;Wetterstation;Regenmenge 1h
+Temperatur;22.8;°C;Werkstatt;Arbeitsplatztemperatur
+Vibration;0.15;mm/s;Maschine A;Lagerzustand
+Drehzahl;1450;U/min;Maschine A;Motorgeschwindigkeit
+Temperatur;85.2;°C;Maschine A;Lagertemperatur
+Öldruck;4.2;bar;Maschine A;Hydrauliksystem
+Durchfluss;125.6;l/min;Kühlsystem;Kühlwasserdurchfluss
+Temperatur;35.8;°C;Kühlsystem;Vorlauftemperatur
+Temperatur;28.4;°C;Kühlsystem;Rücklauftemperatur
+Sauerstoffgehalt;20.8;%;Labor 3;Raumluftqualität
+Methangehalt;1.2;ppm;Labor 3;Gaswarnsystem
+Temperatur;20.5;°C;Archiv;Dokumentenlagerung
+Luftfeuchtigkeit;50.1;%;Archiv;Konservierungsbedingungen
+Helligkeit;89;Lux;Parkplatz;Außenbeleuchtung
+Temperatur;-2.3;°C;Tiefkühlraum;Lebensmittellagerung
+Bodenfeuchtigkeit;32.5;%;Gewächshaus;Bewässerungssystem
+Temperatur;26.7;°C;Gewächshaus;Wachstumsbedingungen
+Luftfeuchtigkeit;85.3;%;Gewächshaus;Optimal für Pflanzen
+UV-Index;3.2;Index;Gewächshaus;Pflanzenschutz
+Wasserstand;1.85;m;Tank A;Füllstand Regenwasser
+Temperatur;15.8;°C;Tank A;Wassertemperatur
+Chlorgehalt;0.8;mg/l;Schwimmbad;Wasseraufbereitung
+pH-Wert;7.4;pH;Schwimmbad;Wasserqualität
+Temperatur;28.0;°C;Schwimmbad;Wassertemperatur
+Ozongehalt;0.05;mg/m³;Labor 4;Luftreinigung
+Partikelanzahl;1250;Partikel/m³;Reinraum;Luftqualität Klasse 1000
+Temperatur;21.0;°C;Reinraum;Kontrollierte Bedingungen
+Luftfeuchtigkeit;40.5;%;Reinraum;Spezifikation eingehalten
+Stromverbrauch;856.2;kWh;Gebäude;Tagesverbrauch
+Gasverbrauch;142.8;m³;Gebäude;Heizungsverbrauch
+Wasserverbrauch;2850;Liter;Gebäude;Tagesverbrauch
+Temperatur;23.2;°C;Konferenzraum;Raumklima
+CO2-Gehalt;580;ppm;Konferenzraum;Belüftung erforderlich
+Schallpegel;38.2;dB;Konferenzraum;Ruhepegel
+Temperatur;22.1;°C;Bibliothek;Lesebereich
+Luftfeuchtigkeit;48.7;%;Bibliothek;Buchkonservierung
