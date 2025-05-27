@@ -1,19 +1,23 @@
 <?php
 /**
- * Messdatenerfassung System
- * Hauptdatei: index.php
+ * Messdatenerfassung System (vollständig kommentiert nach Coding Guidelines)
  *
- * Funktionalitäten:
- * - CSV Import/Export von Messdaten
- * - MySQL Datenbank Integration
- * - Benutzerverwaltung mit Passwort-Hashing
- * - Filter- und Anzeigemöglichkeiten
- * - Session-basierte Authentifizierung
+ * Funktionen:
+ * - Benutzerverwaltung (Registrierung, Login, Löschung)
+ * - Import und Export von Sensordaten (CSV, JSON)
+ * - Tasmota-Datenimport (ESP32)
+ * - Datenanzeige und -filterung
+ * - UI über einfache Tabs
+ *
+ * Hinweis: Diese Datei enthält sowohl Backend-Logik als auch HTML.
  */
 
 session_start();
 
-// Datenbankverbindung
+/**
+ * Klasse Database
+ * Stellt die Datenbankverbindung her und initialisiert Tabellen.
+ */
 class Database {
     private $host = 'localhost';
     private $dbname = 'messdaten_db';
@@ -21,6 +25,10 @@ class Database {
     private $password = '';
     private $pdo;
 
+
+    /**
+     * Konstruktor – Baut Verbindung zur Datenbank auf.
+     */
     public function __construct() {
         try {
             $this->pdo = new PDO(
@@ -34,11 +42,18 @@ class Database {
         }
     }
 
+    /**
+     * Gibt die aktuelle PDO-Verbindung zurück.
+     *
+     * @return PDO
+     */
     public function getConnection() {
         return $this->pdo;
     }
 
-    // Database Setup (Tabellen erstellen wenn nicht vorhanden)
+    /**
+     * Erstellt die notwendigen Tabellen, falls nicht vorhanden.
+     */
     public function setupDatabase() {
         $queries = [
             "CREATE TABLE IF NOT EXISTS users (
@@ -67,15 +82,28 @@ class Database {
     }
 }
 
-// Messdaten Klasse
+/**
+ * Klasse MessdatenManager
+ * Verwaltet das Einfügen, Abrufen und Exportieren von Sensordaten.
+ */
 class MessdatenManager {
     private $db;
 
+    /**
+     * Konstruktor
+     *
+     * @param Database $database
+     */
     public function __construct($database) {
         $this->db = $database->getConnection();
     }
 
-    // CSV Import
+    /**
+     * Importiert Messdaten aus einer CSV-Datei.
+     *
+     * @param string $csvFile Pfad zur CSV-Datei
+     * @return array Anzahl importierter Zeilen und Fehlerliste
+     */
     public function importFromCSV($csvFile) {
         $imported = 0;
         $errors = [];
@@ -111,7 +139,12 @@ class MessdatenManager {
         return ['imported' => $imported, 'errors' => $errors];
     }
 
-    // Messdaten abrufen mit Filter
+    /**
+     * Holt alle Messdaten mit optionalen Filtern.
+     *
+     * @param array $filters Filterparameter
+     * @return array Liste der Messdaten
+     */
     public function getMessdaten($filters = []) {
         $sql = "SELECT * FROM messdaten WHERE 1=1";
         $params = [];
@@ -143,7 +176,10 @@ class MessdatenManager {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // Export als CSV
+    /**
+     * Exportiert Daten als CSV mit optionalem Filter.
+     * Sendet die Datei direkt als Download.
+     */
     public function exportToCSV($filters = []) {
         $data = $this->getMessdaten($filters);
 
@@ -168,7 +204,10 @@ class MessdatenManager {
         exit();
     }
 
-    // Export als JSON
+    /**
+     * Exportiert Daten als JSON mit optionalem Filter.
+     * Sendet die Datei direkt als Download.
+     */
     public function exportToJSON($filters = []) {
         $data = $this->getMessdaten($filters);
 
@@ -180,22 +219,43 @@ class MessdatenManager {
         exit();
     }
 
-    // Messdaten löschen (nur für authentifizierte Benutzer)
+    /**
+     * Löscht einen bestimmten Datensatz nach ID.
+     *
+     * @param int $id Datensatz-ID
+     * @return bool Erfolgreich gelöscht?
+     */
     public function deleteMessdaten($id) {
         $stmt = $this->db->prepare("DELETE FROM messdaten WHERE id = ?");
         return $stmt->execute([$id]);
     }
 }
 
-// Benutzer Management
+
+
+/**
+ * Klasse UserManager
+ * Verwaltung von Benutzern inkl. Authentifizierung.
+ */
 class UserManager {
     private $db;
 
+    /**
+     * Konstruktor
+     *
+     * @param Database $database
+     */
     public function __construct($database) {
         $this->db = $database->getConnection();
     }
 
-    // Benutzer registrieren
+    /**
+     * Registriert einen neuen Benutzer.
+     *
+     * @param string $username
+     * @param string $password
+     * @return bool Erfolg
+     */
     public function registerUser($username, $password) {
         try {
             $passwordHash = hash('sha256', $password);
