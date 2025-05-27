@@ -247,6 +247,45 @@ $message = '';
 $messageType = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    // === Abruf von Tasmota-ESP-Daten ===
+    if (isset($_POST['fetch_tasmota']) && isset($_SESSION['logged_in'])) {
+        $ip = '10.124.127.189';
+        $url = "http://$ip/cm?cmnd=STATUS%208";
+
+        $response = @file_get_contents($url);
+        if ($response) {
+            $data = json_decode($response, true);
+            if (isset($data["StatusSNS"]["BME280"])) {
+                $temp = $data["StatusSNS"]["BME280"]["Temperature"];
+                $hum  = $data["StatusSNS"]["BME280"]["Humidity"];
+                $press = $data["StatusSNS"]["BME280"]["Pressure"];
+                $zeit = date('Y-m-d H:i:s');
+                $von = $_SESSION['username'] ?? 'System';
+
+                $stmt = $database->getConnection()->prepare("
+                    INSERT INTO messdaten (sensor_name, messwert, einheit, standort, beschreibung, erstellt_von, zeitstempel)
+                    VALUES 
+                    ('Temperatur', ?, '°C', 'Tasmota', 'Importiert von ESP32', ?, ?),
+                    ('Luftfeuchtigkeit', ?, '%', 'Tasmota', 'Importiert von ESP32', ?, ?),
+                    ('Luftdruck', ?, 'hPa', 'Tasmota', 'Importiert von ESP32', ?, ?)
+                ");
+                $stmt->execute([$temp, $von, $zeit, $hum, $von, $zeit, $press, $von, $zeit]);
+
+                $message = "✅ Tasmota-Daten importiert.";
+                $messageType = 'success';
+            } else {
+                $message = "❌ Keine BME280-Daten gefunden.";
+                $messageType = 'error';
+            }
+        } else {
+            $message = "❌ Verbindung zum ESP32 fehlgeschlagen.";
+            $messageType = 'error';
+        }
+    }
+
+    // … alle anderen POST-Aktionen (CSV, Login etc.)
+
     // Messdaten bearbeiten
     if (isset($_POST['edit_messdaten']) && isset($_SESSION['logged_in'])) {
         $id = $_POST['messdaten_id'];
@@ -725,6 +764,11 @@ $users = $userManager->getAllUsers();
                 <a href="?export=csv&<?php echo http_build_query($filters); ?>" class="btn success">CSV Export</a>
                 <a href="?export=json&<?php echo http_build_query($filters); ?>" class="btn success">JSON Export</a>
             </div>
+
+            <form method="POST" style="margin-bottom: 20px;">
+                <button type="submit" name="fetch_tasmota" class="btn success">📡 Tasmota-Daten abrufen</button>
+            </form>
+
 
             <!-- Tabelle -->
             <div class="table-container">
