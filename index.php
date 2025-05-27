@@ -140,39 +140,45 @@ class MessdatenManager {
     }
 
     /**
-     * Holt alle Messdaten mit optionalen Filtern.
+     * Ruft Messdaten aus der Datenbank anhand von Filterkriterien ab.
+     * Unterstützt flexible Suche nach Sensorname, Datum und Standort.
      *
-     * @param array $filters Filterparameter
-     * @return array Liste der Messdaten
+     * @param array $filters Assoziatives Array mit möglichen Filtern:
+     *                       - sensor_name (string)
+     *                       - datum_von (string, Format YYYY-MM-DD)
+     *                       - datum_bis (string, Format YYYY-MM-DD)
+     *                       - standort (string)
+     * @return array Ergebnisdaten als assoziatives Array
      */
     public function getMessdaten($filters = []) {
         $sql = "SELECT * FROM messdaten WHERE 1=1";
         $params = [];
 
         if (!empty($filters['sensor_name'])) {
-            $sql .= " AND sensor_name LIKE ?";
-            $params[] = '%' . $filters['sensor_name'] . '%';
+            $sql .= " AND LOWER(sensor_name) LIKE ?";
+            $params[] = '%' . strtolower(trim($filters['sensor_name'])) . '%';
         }
 
         if (!empty($filters['datum_von'])) {
             $sql .= " AND DATE(zeitstempel) >= ?";
-            $params[] = $filters['datum_von'];
+            $params[] = trim($filters['datum_von']);
         }
 
         if (!empty($filters['datum_bis'])) {
             $sql .= " AND DATE(zeitstempel) <= ?";
-            $params[] = $filters['datum_bis'];
+            $params[] = trim($filters['datum_bis']);
         }
 
         if (!empty($filters['standort'])) {
-            $sql .= " AND standort LIKE ?";
-            $params[] = '%' . $filters['standort'] . '%';
+            $sql .= " AND LOWER(standort) LIKE ?";
+            $params[] = '%' . strtolower(trim($filters['standort'])) . '%';
         }
 
         $sql .= " ORDER BY zeitstempel DESC";
 
         $stmt = $this->db->prepare($sql);
         $stmt->execute($params);
+
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
