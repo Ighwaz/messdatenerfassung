@@ -440,13 +440,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $password = $_POST['del_password'];
 
         if ($userManager->deleteUser($username, $password)) {
-            $message = "Benutzer '$username' erfolgreich gelöscht.";
+            // prufen, ob der aktuel eingeloggte Nutzer gelöscht wurde
+            if (isset($_SESSION['username']) && $_SESSION['username'] === $username) {
+                session_destroy();
+                session_start(); // Neue leere Session
+                $message = "Benutzer '$username' erfolgreich gelöscht und abgemeldet.";
+            } else {
+                $message = "Benutzer '$username' erfolgreich gelöscht.";
+            }
             $messageType = 'success';
         } else {
             $message = "Fehler beim Löschen. Benutzername oder Passwort falsch.";
             $messageType = 'error';
         }
     }
+
 
     // Messdaten löschen
     if (isset($_POST['delete_messdaten']) && isset($_SESSION['logged_in'])) {
