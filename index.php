@@ -266,7 +266,13 @@ class UserManager {
         }
     }
 
-    // Benutzer anmelden
+    /**
+     * Loggt einen Benutzer ein.
+     *
+     * @param string $username
+     * @param string $password
+     * @return bool Erfolg
+     */
     public function loginUser($username, $password) {
         $passwordHash = hash('sha256', $password);
         $stmt = $this->db->prepare("SELECT * FROM users WHERE username = ? AND password_hash = ?");
@@ -281,14 +287,24 @@ class UserManager {
         return false;
     }
 
-    // Benutzer löschen
+    /**
+     * Löscht einen Benutzer.
+     *
+     * @param string $username
+     * @param string $password
+     * @return bool Erfolg
+     */
     public function deleteUser($username, $password) {
         $passwordHash = hash('sha256', $password);
         $stmt = $this->db->prepare("DELETE FROM users WHERE username = ? AND password_hash = ?");
         return $stmt->execute([$username, $passwordHash]);
     }
 
-    // Alle Benutzer abrufen
+    /**
+     * Gibt alle Benutzer zurück (ohne Passwörter).
+     *
+     * @return array Benutzerliste
+     */
     public function getAllUsers() {
         $stmt = $this->db->prepare("SELECT id, username, created_at FROM users ORDER BY username");
         $stmt->execute();
@@ -296,7 +312,10 @@ class UserManager {
     }
 }
 
-// Initialisierung
+
+
+
+// === Initialisierung ===
 $database = new Database();
 $database->setupDatabase();
 $messdatenManager = new MessdatenManager($database);
@@ -344,7 +363,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    // … alle anderen POST-Aktionen (CSV, Login etc.)
 
     // Messdaten bearbeiten
     if (isset($_POST['edit_messdaten']) && isset($_SESSION['logged_in'])) {
