@@ -22,10 +22,11 @@ Ein leichtgewichtiges PHP-Projekt zur Erfassung, Anzeige und Verwaltung von Umwe
 ##  Datenimport aus Tasmota
 
 1. Tasmota-Gerät konfigurieren und Sensor (z. B. BME280) anschließen
-2. Rufe die Weboberfläche deines Geräts auf
-3. Öffne die **Konsole** und gebe `Status 8` ein
-4. Kopiere die JSON-Ausgabe und füge sie im Webtool ein
-5. Nach Klick auf „Importieren“ werden die Werte übernommen
+2. ![image](https://github.com/user-attachments/assets/f31a083e-460b-4929-bda2-1ef3b3fb573c)
+3. Rufe die Weboberfläche deines Geräts auf
+4. Öffne die **Konsole** und gebe `Status 8` ein
+5. Kopiere die JSON-Ausgabe und füge sie im Webtool ein
+6. Nach Klick auf „Importieren“ werden die Werte übernommen
 
 ##  Datenexport
 
