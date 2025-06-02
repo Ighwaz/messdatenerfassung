@@ -16,7 +16,7 @@ Ein leichtgewichtiges PHP-Projekt zur Erfassung, Anzeige und Verwaltung von Umwe
 
 1. Projekt in den `htdocs`-Ordner legen (z. B. `C:\xampp\htdocs\messdaten`)
 2. Stelle sicher, dass **Apache** und **MySQL** in XAMPP laufen
-3. Rufe im Browser `http://localhost/messdaten/index.php` auf
+3. Rufe im Browser `http://localhost/"projectfoldername"/index.php` auf
 4. Die Datenbank und Tabellen werden automatisch erstellt
 
 ##  Datenimport aus Tasmota
